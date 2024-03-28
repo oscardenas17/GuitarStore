@@ -8,18 +8,19 @@ function App() {
   const [cart, setCart] = useState([]);
 
   function addToCart(item) {
-    //item no exist return -1
-    const itemExists = cart.findIndex((guitar) => {
-      guitar.id === item.id;
-    });
+    // Buscar si el artículo ya existe en el carrito
+    const itemIndex = cart.findIndex((guitar) => guitar.id === item.id);
 
-    if(itemExists>=0) {
-   const updatedCart = [...cart]
-   updatedCart[itemExists].quantity++
-   setCart(updatedCart)
-  }else{
-    item.quantity = 1;
-    setCart([...cart,item])
+    if (itemIndex !== -1) {
+      // Si el artículo ya existe en el carrito
+      const updatedCart = [...cart];
+      updatedCart[itemIndex].quantity++; // Incrementar la cantidad del artículo existente
+      setCart(updatedCart);
+    } else {
+      // Si el artículo no existe en el carrito
+      item.quantity = 1;
+      setCart([...cart, item]); // Agregar el artículo al carrito
+    }
   }
 
   useEffect(() => {}, []);

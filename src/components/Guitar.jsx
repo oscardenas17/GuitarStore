@@ -1,5 +1,5 @@
 const Guitar = ({ guitar, addToCart }) => {
-  const {  name, price, image, description } = guitar;
+  const { name, price, image, description,  } = guitar;
 
   return (
     <div className="col-md-6 col-lg-4 my-4 row align-items-center">

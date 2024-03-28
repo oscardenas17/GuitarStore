@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState,useMemo } from "react";
 import { db } from "../data/db";
 
 export const useCart = () => {
@@ -11,6 +11,13 @@ export const useCart = () => {
 
   const MAX_ITEMS = 5;
   const MIN_ITEMS = 1;
+
+  useEffect(() => {
+    localStorage.setItem("cart", JSON.stringify(cart));
+  }, [cart]);
+
+
+
   function addToCart(item) {
     // Buscar si el artículo ya existe en el carrito
     const itemExists = cart.findIndex((guitar) => guitar.id === item.id);
@@ -62,9 +69,18 @@ export const useCart = () => {
     setCart([]);
   }
 
-  useEffect(() => {
-    localStorage.setItem("cart", JSON.stringify(cart));
-  }, [cart]);
+
+
+
+    //State Derivado
+    const isEmpty = useMemo(() => cart.length === 0, [cart]);
+
+    const cartTotal = useMemo(
+      () => cart.reduce((total, item) => total + item.quantity * item.price, 0),
+      [cart]
+    );
+
+
 
   return {
     data,
@@ -74,5 +90,7 @@ export const useCart = () => {
     increaseQuantity,
     decreaceQuantity,
     clearCart,
+    isEmpty,
+    cartTotal
   };
 };

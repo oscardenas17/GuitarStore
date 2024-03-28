@@ -8,7 +8,18 @@ function App() {
   const [cart, setCart] = useState([]);
 
   function addToCart(item) {
-    setCart( prevCart =>[...prevCart, item])
+    //item no exist return -1
+    const itemExists = cart.findIndex((guitar) => {
+      guitar.id === item.id;
+    });
+
+    if(itemExists>=0) {
+   const updatedCart = [...cart]
+   updatedCart[itemExists].quantity++
+   setCart(updatedCart)
+  }else{
+    item.quantity = 1;
+    setCart([...cart,item])
   }
 
   useEffect(() => {}, []);

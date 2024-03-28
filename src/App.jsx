@@ -56,6 +56,10 @@ function App() {
     setCart(updatedCart);
   }
 
+  function clearCart() {
+    setCart([]);
+  }
+
   useEffect(() => {}, []);
 
   return (
@@ -65,6 +69,7 @@ function App() {
         removeFromCart={removeFromCart}
         increaseQuantity={increaseQuantity}
         decreaceQuantity={decreaceQuantity}
+        clearCart={clearCart}
       />
       <main className="container-xl mt-5">
         <h2 className="text-center">Nuestra Colección</h2>

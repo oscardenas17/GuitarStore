@@ -7,14 +7,17 @@ function App() {
   const [data, setData] = useState(db);
   const [cart, setCart] = useState([]);
 
+  const MAX_ITEMS = 5;
+  const MIN_ITEMS = 1;
   function addToCart(item) {
     // Buscar si el artículo ya existe en el carrito
-    const itemIndex = cart.findIndex((guitar) => guitar.id === item.id);
+    const itemExists = cart.findIndex((guitar) => guitar.id === item.id);
 
-    if (itemIndex !== -1) {
+    if (itemExists !== -1) {
+      if (cart[itemExists].quantity >= MAX_ITEMS) return;
       // Si el artículo ya existe en el carrito
       const updatedCart = [...cart];
-      updatedCart[itemIndex].quantity++; // Incrementar la cantidad del artículo existente
+      updatedCart[itemExists].quantity++; // Incrementar la cantidad del artículo existente
       setCart(updatedCart);
     } else {
       // Si el artículo no existe en el carrito
@@ -27,11 +30,42 @@ function App() {
     setCart((prevCart) => prevCart.filter((guitar) => guitar.id !== id));
   }
 
+  function increaseQuantity(id) {
+    const updatedCart = cart.map((item) => {
+      if (item.id === id && item.quantity < MAX_ITEMS) {
+        return {
+          ...item,
+          quantity: item.quantity + 1,
+        };
+      }
+      return item;
+    });
+    setCart(updatedCart);
+  }
+
+  function decreaceQuantity(id) {
+    const updatedCart = cart.map((item) => {
+      if (item.id === id && item.quantity > MIN_ITEMS) {
+        return {
+          ...item,
+          quantity: item.quantity - 1,
+        };
+      }
+      return item;
+    });
+    setCart(updatedCart);
+  }
+
   useEffect(() => {}, []);
 
   return (
     <>
-      <Header cart={cart} removeFromCart={removeFromCart} />
+      <Header
+        cart={cart}
+        removeFromCart={removeFromCart}
+        increaseQuantity={increaseQuantity}
+        decreaceQuantity={decreaceQuantity}
+      />
       <main className="container-xl mt-5">
         <h2 className="text-center">Nuestra Colección</h2>
 
